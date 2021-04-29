@@ -1,0 +1,7 @@
+# created by virtualenv automatically
+cms/__pycache__
+panel/__pycache__
+panel/migrations
+bin
+lib
+pyvenv.cfg
