@@ -1,6 +1,6 @@
 # Cognizance Club Management System (CCMS)
 [![Docker Image CI](https://github.com/cognizance-amrita/cms/actions/workflows/docker-image.yml/badge.svg)](https://github.com/cognizance-amrita/cms/actions/workflows/docker-image.yml)
-[![CodeQL](https://github.com/cognizance-amrita/cognizance_cms/actions/workflows/codeql-analysis.yml/badge.svg?event=push)](https://github.com/cognizance-amrita/cognizance_cms/actions/workflows/codeql-analysis.yml)
+[![Django CI](https://github.com/cognizance-amrita/cms/actions/workflows/django.yml/badge.svg)](https://github.com/cognizance-amrita/cms/actions/workflows/django.yml)
 <br/>
 
 Club Management System (CMS) is django-based web-app which is specially made for our club. 
