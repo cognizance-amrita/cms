@@ -1,5 +1,5 @@
 # Cognizance Club Management System (CCMS)
-[![Docker Image CI](https://github.com/cognizance-amrita/cms/actions/workflows/docker-image.yml/badge.svg)](https://github.com/cognizance-amrita/cms/actions/workflows/docker-image.yml)
+[![Docker](https://github.com/cognizance-amrita/cms/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/cognizance-amrita/cms/actions/workflows/docker-publish.yml)
 [![Django CI](https://github.com/cognizance-amrita/cms/actions/workflows/django.yml/badge.svg)](https://github.com/cognizance-amrita/cms/actions/workflows/django.yml)
 [![Django Security Check](https://github.com/cognizance-amrita/cms/actions/workflows/django_security_check.yml/badge.svg)](https://github.com/cognizance-amrita/cms/actions/workflows/django_security_check.yml)  
 <br/>
