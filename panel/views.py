@@ -1,13 +1,29 @@
 from django.shortcuts import render
+from .models import Member, Domain, Task, Application, DomainMember
 
 def home(request):
-    return render(request, 'panel/index.html')
+    members_count = Member.objects.count
+    domains_count = Domain.objects.count
+    tasks_count = Task.objects.count
+    applications_count = Application.objects.count
+    data = {
+        'members_count': members_count,
+        'domains_count': domains_count, 
+        'tasks_count': tasks_count, 
+        'applications_count': applications_count
+    }
+    return render(request, 'panel/index.html', data)
 
 def applications(request):
     return render(request, 'panel/applications.html')
 
 def members(request):
-    return render(request, 'panel/members.html')
+    members = Member.objects.all()
+    domain_member = DomainMember.objects.all()
+    data = {
+        'members': members
+    }
+    return render(request, 'panel/members.html', data)
 
 def tasks(request):
     return render(request, 'panel/tasks.html')
@@ -28,4 +44,10 @@ def profile(request):
     return render(request, 'panel/profile.html')
 
 def domains(request):
-    return render(request, 'panel/domains.html')
+    domains = Domain.objects.all()
+    data = {
+        'domains': domains
+    }
+    return render(request, 'panel/domains.html', data)
+
+

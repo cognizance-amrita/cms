@@ -1,3 +1,144 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from django.contrib.auth.models import User
 
-# Create your models here.
+class Department(models.Model):
+    name = models.CharField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Role(models.Model):
+    name = models.CharField(max_length=100, null=True)
+    from_date = models.DateTimeField(auto_now_add=True)
+    discord_role_id = models.CharField(max_length=50, null=True)
+    
+    def __str__(self):
+        return self.name
+
+class Member(models.Model):
+    years = (
+        ('I year', 'I year'),
+        ('II year', 'II year'),
+        ('III year', 'III year'),
+        ('IV year', 'IV year'),
+    )
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    academic_year = models.CharField(choices=years, max_length=100, null=True)
+    discord_id = models.CharField(max_length=50, null=True)
+    github_username = models.CharField(max_length=200, null=True)
+    department = models.OneToOneField(Department, on_delete=models.CASCADE)
+    email = models.EmailField(null=True)
+    join_date = models.DateTimeField(auto_now_add=True)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.first_name + self.last_name
+
+class Domain(models.Model):
+    name = models.CharField(max_length=50, null=True)
+    coordinators = models.ForeignKey(Member, related_name='coordinators', on_delete=models.CASCADE)
+    mentors = models.ForeignKey(Member, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+class DomainMember(models.Model):
+    member = models.OneToOneField(Member, on_delete=models.CASCADE)
+    domain = models.OneToOneField(Domain, on_delete=models.CASCADE)
+    join_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.member.first_name + self.member.last_name
+    
+
+class Application(models.Model):
+
+    years = (
+        ('I year', 'I year'),
+        ('II year','II year'),
+        ('III year','III year'),
+        ('IV year','IV year')
+    )
+    
+    statuses = (
+        ('Under review','Under review'),
+        ('Accepted','Accepted'),
+        ('Rejected','Rejected')
+    )
+    
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    email = models.EmailField(max_length=100, null=True)
+    department = models.OneToOneField(Department, on_delete=models.CASCADE)
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    ques1 = models.TextField(max_length=400, null=True)
+    writeup = models.TextField(max_length=1000, null=True)
+    ac_year = models.CharField(max_length=20, null=True, choices=years)
+    applied_on = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=50, null=True, choices=statuses)
+    experience = models.TextField(max_length=500, null=True)
+    reviewer = models.OneToOneField(Member, on_delete=models.CASCADE)
+    tasksrepo = models.URLField(max_length=200, null=True)
+    discord_id = models.CharField(max_length=50, null=True)
+    github_username = models.CharField(max_length=200, null=True)
+    phone = models.CharField(max_length=200, null=True)
+
+    def __str__(self):
+        return self.first_name + self.last_name
+
+class Achievement(models.Model):
+
+    title = models.CharField(max_length=200, null=True)
+    content = models.CharField(max_length=1000, null=True)
+    achievers = models.ForeignKey(Member, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, upload_to='Achievements')
+    date = models.DateField()
+    post_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+class Task(models.Model):
+
+    title = models.CharField(max_length=200, null=True)
+    goal = models.CharField(max_length=500, null=True)
+    author = models.OneToOneField(Member, on_delete=models.CASCADE)
+    content = models.TextField(max_length=2000, null=True)
+    deadline = models.DateTimeField(null=True)
+    starting_time = models.DateTimeField(null=True)
+    max_score = models.FloatField(null=True)
+    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    resource_file = models.FileField(null=True)
+
+    def __str__(self):
+        return self.title
+
+class Submission(models.Model):
+     
+    task_id = models.IntegerField(null=True)
+    username = models.CharField(max_length=200, null=True)
+    score = models.FloatField(max_length=50, null=True)
+    submitted_on = models.DateTimeField(auto_now_add=True)
+    submission_file = models.FileField(null=True)
+    submission_text = models.CharField(max_length=500, null=True)
+    evaluator = models.OneToOneField(Member, on_delete=models.CASCADE)
+    feedback = models.CharField(max_length=500, null=True)
+    
+    def __str__(self):
+        return self.username
+
+# DJANGO SIGNALS 
+
+@receiver(post_save, sender=Member)
+def createUser(sender, instance, **kwargs):
+    user = User.objects.create(
+        email=instance.email,
+        date_joined=instance.join_date,
+        password='admin123',
+        first_name=instance.first_name,
+        last_name=instance.last_name,
+        username=(instance.first_name + '_' + instance.last_name).lower()
+        )

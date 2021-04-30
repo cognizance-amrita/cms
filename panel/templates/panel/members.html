@@ -99,20 +99,22 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Domain</th>
+                                            <th>Department</th>
                                             <th>Academic Year</th>
                                             <th>Join date</th>
                                             <th>Operation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Sanjay</td>
-                                            <td>AI</td>
-                                            <td>II year</td>
-                                            <td>2020/11/28</td>
-                                            <td><button class="btn btn-primary" type="button">View</button></td>
-                                        </tr>
+                                        {% for member in members %}
+                                            <tr>
+                                                <td>{{member.first_name}} {{member.last_name}}</td>
+                                                <td>{{member.department.name}}</td>
+                                                <td>{{member.academic_year}}</td>
+                                                <td>{{member.join_date}}</td>
+                                                <td><button class="btn btn-primary" type="button">View</button></td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                     <tfoot>
                                         <tr></tr>
