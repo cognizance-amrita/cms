@@ -1,16 +1,16 @@
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
+from panel.utils.discord import Discord
 
 class Department(models.Model):
-    name = models.CharField(max_length=100, null=True)
-
+    name = models.CharField(max_length=100, primary_key=True, default='')
     def __str__(self):
         return self.name
 
 class Role(models.Model):
-    name = models.CharField(max_length=100, null=True)
+    name = models.CharField(max_length=100, primary_key=True, default='')
     from_date = models.DateTimeField(auto_now_add=True)
     discord_role_id = models.CharField(max_length=50, null=True)
     
@@ -24,29 +24,36 @@ class Member(models.Model):
         ('III year', 'III year'),
         ('IV year', 'IV year'),
     )
+    '''
+    deps  = [] 
+    departments = Department.objects.all()
+    for d in departments:
+        deps.append((d.name, d.name))
+    deps = tuple(deps)
+    '''
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     academic_year = models.CharField(choices=years, max_length=100, null=True)
     discord_id = models.CharField(max_length=50, null=True)
-    github_username = models.CharField(max_length=200, null=True)
+    github_username = models.CharField(max_length=200, primary_key=True, default='')
     department = models.OneToOneField(Department, on_delete=models.CASCADE)
     email = models.EmailField(null=True)
     join_date = models.DateTimeField(auto_now_add=True)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    role = models.OneToOneField(Role, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.first_name + self.last_name
 
 class Domain(models.Model):
-    name = models.CharField(max_length=50, null=True)
-    coordinators = models.ForeignKey(Member, related_name='coordinators', on_delete=models.CASCADE)
-    mentors = models.ForeignKey(Member, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50, primary_key=True, default='')
+    coordinators = models.ManyToOneRel(Member, to='coordinators', field_name='first_name', on_delete=models.CASCADE)
+    mentors = models.ManyToOneRel(Member, to='mentors', field_name='first_name', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
 
 class DomainMember(models.Model):
-    member = models.OneToOneField(Member, on_delete=models.CASCADE)
+    member = models.OneToOneField(Member, on_delete=models.CASCADE, primary_key=True, default='')
     domain = models.OneToOneField(Domain, on_delete=models.CASCADE)
     join_date = models.DateTimeField(auto_now_add=True)
 
@@ -71,9 +78,9 @@ class Application(models.Model):
     
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
-    email = models.EmailField(max_length=100, null=True)
+    email = models.EmailField(max_length=100, primary_key=True, default='')
     department = models.OneToOneField(Department, on_delete=models.CASCADE)
-    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain = models.ManyToOneRel(Domain, to='domain', field_name='name', on_delete=models.CASCADE)
     ques1 = models.TextField(max_length=400, null=True)
     writeup = models.TextField(max_length=1000, null=True)
     ac_year = models.CharField(max_length=20, null=True, choices=years)
@@ -93,16 +100,16 @@ class Achievement(models.Model):
 
     title = models.CharField(max_length=200, null=True)
     content = models.CharField(max_length=1000, null=True)
-    achievers = models.ForeignKey(Member, on_delete=models.CASCADE)
+    achievers = models.ManyToOneRel(Member, to='achievers', field_name='first_name', on_delete=models.CASCADE)
     image = models.ImageField(null=True, upload_to='Achievements')
-    date = models.DateField()
+    date = models.DateField(primary_key=True, default='')
     post_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
 
 class Task(models.Model):
-
+    id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200, null=True)
     goal = models.CharField(max_length=500, null=True)
     author = models.OneToOneField(Member, on_delete=models.CASCADE)
@@ -110,7 +117,7 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True)
     starting_time = models.DateTimeField(null=True)
     max_score = models.FloatField(null=True)
-    domain = models.ForeignKey(Domain, on_delete=models.CASCADE)
+    domain = models.OneToOneField(Domain, on_delete=models.CASCADE)
     resource_file = models.FileField(null=True)
 
     def __str__(self):
@@ -119,7 +126,7 @@ class Task(models.Model):
 class Submission(models.Model):
      
     task_id = models.IntegerField(null=True)
-    username = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=200, primary_key=True, default='')
     score = models.FloatField(max_length=50, null=True)
     submitted_on = models.DateTimeField(auto_now_add=True)
     submission_file = models.FileField(null=True)
@@ -142,3 +149,27 @@ def createUser(sender, instance, **kwargs):
         last_name=instance.last_name,
         username=(instance.first_name + '_' + instance.last_name).lower()
         )
+    # Discord client
+    obj = []
+    obj.append('Nzg0NzU3MzM1MzIyOTE4OTEz.X8t8OA.4SDjrGqB7p8xUrK_g9p8-hvHHk4') #Token
+    obj.append('790264911254388776') #Guild
+    obj.append('816274899257655297') #Channel
+    msg = '<@!'+ instance.discord_id +'>'+ ' is now an official member of the club :star:'
+    client = Discord(obj=obj, message=msg)
+    client.sendMessage()
+
+@receiver(pre_delete, sender=Member)
+def kickUser(sender, instance, **kwargs):
+    username=(instance.first_name + '_' + instance.last_name).lower()
+    user = User.objects.get(username=username)
+    user.delete()
+    # Discord client
+    obj = []
+    obj.append('Nzg0NzU3MzM1MzIyOTE4OTEz.X8t8OA.4SDjrGqB7p8xUrK_g9p8-hvHHk4') #Token
+    obj.append('790264911254388776') #Guild
+    obj.append('816274899257655297') #Channel
+    discord_id = str(instance.discord_id) #Get ID of the user
+    msg = instance.first_name + ' ' + instance.last_name + ' is kicked out from the club ⚠️'
+    client = Discord(obj=obj, message=msg, userID=discord_id)
+    client.kickMember()
+    client.sendMessage()
