@@ -71,7 +71,11 @@
                                         {% for domain in domains %}
                                             <tr>
                                                 <td>{{domain.name}}</td>
-                                                <td>{{domain.coordinators}}</td>
+                                                <td>
+                                                {% for co in domain.coordinators.all %}
+                                                {{co.first_name}} {{co.last_name}},
+                                                {% endfor %}
+                                                </td>
                                                 <td><button class="btn btn-primary" type="button">View</button></td>
                                             </tr>
                                         {% endfor %}
