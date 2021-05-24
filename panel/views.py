@@ -2,6 +2,7 @@ from cms.settings.base import DISCORD_CHANNEL, DISCORD_GUILD, DISCORD_TOKEN
 from django.shortcuts import render, redirect
 from .models import Member, Domain, Task, Application, DomainMember, Role, Position
 from panel.utils.discord import Discord
+from django.contrib.auth.models import User
 
 def home(request):
     members_count = Member.objects.count
@@ -85,7 +86,28 @@ def login(request):
     return render(request, 'panel/login.html')
 
 def profile(request):
-    return render(request, 'panel/profile.html')
+    if request.method == 'POST':
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        github_username = request.POST.get('github_username')
+        academic_year = request.POST.get('academic_year')
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        discord_id = request.POST.get('discord_id')
+        member = Member.objects.get(email=request.user.email)
+        member.first_name = first_name
+        member.last_name = last_name
+        member.github_username = github_username
+        member.academic_year = academic_year
+        member.username = username
+        member.phone = phone_number
+        member.discord_id = discord_id
+        member.save()
+        return redirect('home')
+    member = Member.objects.get(email=request.user.email)
+    current_username = request.user.username
+    return render(request, 'panel/profile.html', {'member':member, 'username':current_username})
 
 def domains(request):
     domains = Domain.objects.all()

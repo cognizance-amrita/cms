@@ -16,7 +16,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(215,65,55);">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: #000d1a;">
             <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
                     <div class="sidebar-brand-icon rotate-n-15"></div>
                     <div class="sidebar-brand-text mx-3"><span>cognizance</span></div>
@@ -49,37 +49,10 @@
                                     </form>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"></a>
-                                    <div class="dropdown-menu dropdown-menu-right dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="mr-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                            </li>
+
                             <li class="nav-item dropdown no-arrow">
                                 <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">Admin</span><i class="fa fa-user-circle-o"></i></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="profile.html"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
@@ -87,114 +60,85 @@
                         </ul>
                     </div>
                 </nav>
-                <div class="container-fluid">
-                    <h3 class="text-dark mb-4">Profile</h3>
-                    <div class="row mb-3">
-                        <div class="col-lg-4">
-                            <div class="card mb-3">
-                                <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="dogs/image2.jpeg" width="160" height="160"></div>
-                            </div>
-                            <div class="card shadow mb-5">
-                                <div class="card-header py-3">
-                                    <p class="text-primary m-0 font-weight-bold">Other Settings</p>
+                <form method="post">
+                {% csrf_token %}
+                    <div class="container-fluid">
+                        <h3 class="text-dark mb-4">Profile</h3>
+                        <div class="row mb-3">
+                            <div class="col-lg-4">
+                                <div class="card mb-3">
+                                    <div class="card-body text-center shadow"><img class="rounded-circle mb-3 mt-4" src="https://avatars.githubusercontent.com/{{member.github_username}}" width="160" height="160"></div>
                                 </div>
-                                <div class="card-body">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group"><label>Academic year</label><select style="width: 100%;height: 40px;color: rgb(116,112,112);">
-                                                    <option value="I year" selected="">I year</option>
-                                                    <option value="II year">II year</option>
-                                                    <option value="III year">III year</option>
-                                                    <option value="IV year">IV year</option>
-                                                </select></div>
-                                        </div>
+                                <div class="card shadow mb-5">
+                                    <div class="card-header py-3">
+                                        <p class="text-primary m-0 font-weight-bold">Other Settings</p>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="row mb-3 d-none">
-                                <div class="col">
-                                    <div class="card text-white bg-primary shadow">
-                                        <div class="card-body">
-                                            <div class="row mb-2">
-                                                <div class="col">
-                                                    <p class="m-0">Peformance</p>
-                                                    <p class="m-0"><strong>65.2%</strong></p>
-                                                </div>
-                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="form-group"><label>Academic year</label><select style="width: 100%;height: 40px;color: rgb(116,112,112);" required name="academic_year">
+                                                        <option value="{{member.academic_year}}" selected="">{{member.academic_year}}</option>
+                                                        <option value="I year">I year</option>
+                                                        <option value="II year">II year</option>
+                                                        <option value="III year">III year</option>
+                                                        <option value="IV year">IV year</option>
+                                                    </select></div>
                                             </div>
-                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col">
-                                    <div class="card text-white bg-success shadow">
-                                        <div class="card-body">
-                                            <div class="row mb-2">
-                                                <div class="col">
-                                                    <p class="m-0">Peformance</p>
-                                                    <p class="m-0"><strong>65.2%</strong></p>
-                                                </div>
-                                                <div class="col-auto"><i class="fas fa-rocket fa-2x"></i></div>
-                                            </div>
-                                            <p class="text-white-50 small m-0"><i class="fas fa-arrow-up"></i>&nbsp;5% since last month</p>
-                                        </div>
-                                    </div>
-                                </div>
+                                <div class="form-group"><button type="submit" style="padding-left: 12px; padding-right:12px; padding-top:8px; padding-bottom:8px; background: #000d1a; color:white; border-color: transparent; border-radius: 10px;">Save changes</button></div>
                             </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="card shadow mb-3">
-                                        <div class="card-header py-3">
-                                            <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                            <div class="col-lg-8">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card shadow mb-3">
+                                            <div class="card-header py-3">
+                                                <p class="text-primary m-0 font-weight-bold">User Settings</p>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <div class="form-group"><label for="username"><strong>Username</strong></label><input class="form-control" required type="text" id="username" placeholder="user.name" name="username" value="{{username}}"></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" required type="email" id="email" placeholder="user@example.com" name="email" value="{{member.email}}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" required type="text" id="first_name" placeholder="John" name="first_name" value="{{member.first_name}}"></div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" required type="text" id="last_name" placeholder="Doe" name="last_name" value="{{member.last_name}}"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <div class="form-group"><label for="github_username"><strong>GitHub Username</strong></label><input class="form-control" type="text" required id="github_username" placeholder="John" name="github_username" value="{{member.github_username}}"></div>
+                                                        </div>
+                                                    </div>
+                                            </div>
                                         </div>
-                                        <div class="card-body">
-                                            <form>
-                                                <div class="form-row">
-                                                    <div class="col">
-                                                        <div class="form-group"><label for="username"><strong>Username</strong></label><input class="form-control" type="text" id="username" placeholder="user.name" name="username"></div>
+                                        <div class="card shadow">
+                                            <div class="card-header py-3">
+                                                <p class="text-primary m-0 font-weight-bold">Contact Settings</p>
+                                            </div>
+                                            <div class="card-body">
+                                                    <div class="form-group"><label for="phone"><strong>Phone number</strong></label><input class="form-control" required type="text" id="phone" placeholder="9876543210" name="phone_number" value="{{member.phone}}"></div>
+                                                    <div class="form-row">
+                                                        <div class="col">
+                                                            <div class="form-group"><label for="discord_id"><strong>Discord ID</strong></label><input class="form-control" required type="text" id="discord_id" placeholder="34321451235245124" name="discord_id" value="{{member.discord_id}}"></div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col">
-                                                        <div class="form-group"><label for="email"><strong>Email Address</strong></label><input class="form-control" type="email" id="email" placeholder="user@example.com" name="email"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-row">
-                                                    <div class="col">
-                                                        <div class="form-group"><label for="first_name"><strong>First Name</strong></label><input class="form-control" type="text" id="first_name" placeholder="John" name="first_name"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="form-group"><label for="last_name"><strong>Last Name</strong></label><input class="form-control" type="text" id="last_name" placeholder="Doe" name="last_name"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save Settings</button></div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                    <div class="card shadow">
-                                        <div class="card-header py-3">
-                                            <p class="text-primary m-0 font-weight-bold">Contact Settings</p>
-                                        </div>
-                                        <div class="card-body">
-                                            <form>
-                                                <div class="form-group"><label for="address"><strong>Phone number</strong></label><input class="form-control" type="text" id="address" placeholder="9876543210" name="phone_number"></div>
-                                                <div class="form-row">
-                                                    <div class="col">
-                                                        <div class="form-group"><label for="city"><strong>Discord ID</strong></label><input class="form-control" type="text" id="city" placeholder="34321451235245124" name="dscord_id"></div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="form-group"><label for="country"><strong>Country</strong></label><input class="form-control" type="text" id="country" placeholder="USA" name="country"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group"><button class="btn btn-primary btn-sm" type="submit">Save&nbsp;Settings</button></div>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <footer class="bg-white sticky-footer">
                 <div class="container my-auto">
