@@ -112,7 +112,7 @@
                                                 <td>{{member.department.name}}</td>
                                                 <td>{{member.academic_year}}</td>
                                                 <td>{{member.join_date}}</td>
-                                                <td><button class="btn btn-primary" type="button">View</button></td>
+                                                <td><a href="/view-member/{{member.github_username}}"><button class="btn btn-primary" type="button">View</button></a></td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

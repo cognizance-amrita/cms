@@ -23,6 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '3u9t4*23w8t7e4&ueslzgzarh-l-n(z1_a^nljcis$7wwzzl9@'
 
+DISCORD_TOKEN = 'Nzg0NzU3MzM1MzIyOTE4OTEz.X8t8OA.4SDjrGqB7p8xUrK_g9p8-hvHHk4'
+DISCORD_GUILD = '790264911254388776'
+DISCORD_CHANNEL = '816274899257655297'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

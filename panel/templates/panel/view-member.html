@@ -1,0 +1,194 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>{{member.first_name}} {{member.last_name}}</title>
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/fontawesome5-overrides.min.css' %}">
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0" style="background: rgb(215,65,55);">
+            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                    <div class="sidebar-brand-icon rotate-n-15"></div>
+                    <div class="sidebar-brand-text mx-3"><span>cognizance</span></div>
+                </a>
+                <hr class="sidebar-divider my-0">
+                <ul class="navbar-nav text-light" id="accordionSidebar">
+                    <li class="nav-item"><a class="nav-link" href="/"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}"><i class="fa fa-calendar-check-o"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'members' %}"><i class="fa fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'tasks' %}"><i class="fa fa-check-square-o"></i><span>Tasks</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'domains' %}"><i class="far fa-user-circle"></i><span>Domains</span></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'achievements' %}"><i class="fa fa-trophy"></i><span>Achievements</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'announcements' %}"><i class="fa fa-microphone"></i><span>Announcements</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'applications' %}"><i class="fa fa-hand-paper-o"></i><span>Applications</span></a></li>
+                </ul>
+                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
+            </div>
+        </nav>
+        <div class="d-flex flex-column" id="content-wrapper">
+            <div id="content">
+                <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
+                        <ul class="navbar-nav flex-nowrap ml-auto">
+                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
+                                <div class="dropdown-menu dropdown-menu-right p-3 animated--grow-in" aria-labelledby="searchDropdown">
+                                    <form class="form-inline mr-auto navbar-search w-100">
+                                        <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                                            <div class="input-group-append"><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </li>
+                            
+                            <li class="nav-item dropdown no-arrow">
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">Admin</span><i class="fa fa-user-circle-o"></i></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="profile.html"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav><a href="{% url 'members' %}"><button class="btn btn-primary" type="button" style="padding-right: 15px;padding-left: 15px;margin-left: 24px;margin-bottom: 20px;"><i class="icon ion-ios-arrow-back" style="width: 10px;padding: 2px;margin-right: 5px;"></i>Back</button></a>
+                <div class="container-fluid">
+                    <h3 class="text-dark mb-4" style="font-weight: bold;">{{member.first_name}} {{member.last_name}}</h3>
+                    <div class="card shadow">
+                        <div class="card-header py-3">
+                            <p class="text-primary m-0 font-weight-bold">Member Info</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th style="color: rgb(57,58,62);">Basic details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Department</td>
+                                                    <td style="color: rgb(77,78,84);">{{member.department}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Email address</td>
+                                                    <td style="color: rgb(64,65,68);">{{member.email}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>GitHub username</td>
+                                                    <td style="color: rgb(60,61,64);">{{member.github_username}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Phone number</td>
+                                                    <td style="color: rgb(59,59,64);">{{member.phone}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Domain(s) of Interest</td>
+                                                    <td style="color: rgb(59,59,64);">{{domains}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Joined on</td>
+                                                    <td style="color: rgb(59,59,64);">{{member.join_date}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr style="color: rgb(38,38,40);background: #e7e0e0;border-width: 4px;">
+                                    <p style="font-weight: bold;font-size: 19px;padding: 10px;color: rgb(25,97,39);margin-bottom: 20px;margin-top: 10px;">Contribution</p><img style="width: 100%;height: 200px; padding: 10px;" src="https://ghchart.rshah.org/{{member.github_username}}">
+                                    <hr style="color: rgb(38,38,40);background: #e7e0e0;border-width: 4px;margin-top: 50px;">
+                                    <p style="font-weight: bold;font-size: 19px;color: rgb(61,61,64);margin-top: 20px;padding: 10px;">Achievements</p>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Subject</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Hackathon</td>
+                                                    <td>2021/5/24</td>
+                                                </tr>
+                                                <tr></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <hr style="color: rgb(38,38,40);background: #e7e0e0;border-width: 4px;margin-top: 50px;">
+                                    <p style="font-weight: bold;font-size: 19px;color: rgb(61,61,64);margin-top: 20px;padding: 10px;">Club Responsibility</p>
+                                    <form method="post">
+                                    {% csrf_token %}
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr></tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Role<br>Current: {{current_role}}</td>
+                                                        <td><select class="form-control" name="role">
+                                                                <optgroup label="Roles">
+                                                                    {% for role in roles %}
+                                                                        <option value="{{role.name}}">{{role.name}}</option>
+                                                                    {% endfor %}
+                                                                </optgroup>
+                                                            </select></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Position(s)<br>Current: {{current_positions}}</td>
+                                                        <td>
+                                                        {% for position in positions %}
+                                                            <div class="form-check"><input class="form-check-input" type="checkbox" id="{{position}}" name="position []" value="{{position.name}}"><label class="form-check-label" for="position">{{position.name}}</label></div>
+                                                        {% endfor %}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Do you want to revoke his/her membership?</td>
+                                                        <td>
+                                                            <div class="form-check"><input class="form-check-input" type="radio" id="revoke-yes" name="revoke" value="Yes"><label class="form-check-label" for="revoke-yes">Yes</label></div>
+                                                            <div class="form-check"><input class="form-check-input" type="radio" id="revoke-no" name="revoke" value="No"><label class="form-check-label" for="revoke-no">No</label></div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Reason</td>
+                                                        <td><textarea class="form-control" name="revoke-reason"></textarea></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Operations</td>
+                                                        <td><button class="btn btn-primary" type="submit">Save changes</button></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="bg-white sticky-footer">
+                <div class="container my-auto">
+                    <div class="text-center my-auto copyright"><span>Copyright © Cognizance 2021</span></div>
+                </div>
+            </footer>
+        </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+    </div>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script src="{% static 'js/script.min.js' %}"></script>
+</body>
+
+</html>

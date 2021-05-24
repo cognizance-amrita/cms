@@ -1,3 +1,4 @@
+from cms.settings.base import DISCORD_CHANNEL, DISCORD_GUILD, DISCORD_TOKEN
 from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_delete
@@ -10,6 +11,14 @@ class Department(models.Model):
         return self.name
 
 class Role(models.Model):
+    name = models.CharField(max_length=100, primary_key=True, default='')
+    from_date = models.DateTimeField(auto_now_add=True)
+    discord_role_id = models.CharField(max_length=50, null=True)
+    
+    def __str__(self):
+        return self.name
+
+class Position(models.Model):
     name = models.CharField(max_length=100, primary_key=True, default='')
     from_date = models.DateTimeField(auto_now_add=True)
     discord_role_id = models.CharField(max_length=50, null=True)
@@ -32,7 +41,9 @@ class Member(models.Model):
     department = models.ForeignKey(Department, on_delete=models.CASCADE)
     email = models.EmailField(null=True)
     join_date = models.DateTimeField(auto_now_add=True)
-    role = models.ManyToManyField(Role)
+    role = models.ForeignKey(Role, on_delete=models.CASCADE)
+    positions = models.ManyToManyField(Position)
+    phone = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.first_name + self.last_name
@@ -134,7 +145,8 @@ class Submission(models.Model):
 
 @receiver(post_save, sender=Member)
 def createUser(sender, instance, **kwargs):
-    user = User.objects.create(
+    if User.objects.get(email=instance.email) == None:
+        user = User.objects.create(
         email=instance.email,
         date_joined=instance.join_date,
         password='admin123',
@@ -142,14 +154,14 @@ def createUser(sender, instance, **kwargs):
         last_name=instance.last_name,
         username=(instance.first_name + '_' + instance.last_name).lower()
         )
-    # Discord client
-    obj = []
-    obj.append('Nzg0NzU3MzM1MzIyOTE4OTEz.X8t8OA.4SDjrGqB7p8xUrK_g9p8-hvHHk4') #Token
-    obj.append('790264911254388776') #Guild
-    obj.append('816274899257655297') #Channel
-    msg = '<@!'+ instance.discord_id +'>'+ ' is now an official member of the club :star:'
-    client = Discord(obj=obj, message=msg)
-    client.sendMessage()
+        # Discord client
+        obj = []
+        obj.append(DISCORD_TOKEN) #Token
+        obj.append(DISCORD_GUILD) #Guild
+        obj.append(DISCORD_CHANNEL) #Channel
+        msg = '<@!'+ instance.discord_id +'>'+ ' is now an official member of the club :star:'
+        client = Discord(obj=obj, message=msg)
+        client.sendMessage()
 
 @receiver(pre_delete, sender=Member)
 def kickUser(sender, instance, **kwargs):
@@ -158,9 +170,9 @@ def kickUser(sender, instance, **kwargs):
     user.delete()
     # Discord client
     obj = []
-    obj.append('Nzg0NzU3MzM1MzIyOTE4OTEz.X8t8OA.4SDjrGqB7p8xUrK_g9p8-hvHHk4') #Token
-    obj.append('790264911254388776') #Guild
-    obj.append('816274899257655297') #Channel
+    obj.append(DISCORD_TOKEN) #Token
+    obj.append(DISCORD_GUILD) #Guild
+    obj.append(DISCORD_CHANNEL) #Channel
     discord_id = str(instance.discord_id) #Get ID of the user
     msg = instance.first_name + ' ' + instance.last_name + ' is kicked out from the club ⚠️'
     client = Discord(obj=obj, message=msg, userID=discord_id)
