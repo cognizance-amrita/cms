@@ -49,6 +49,7 @@ def view_member(request, id):
                 member.positions.add(Position.objects.get(name=p))
             return redirect('members')
     member = Member.objects.get(github_username=id)
+    user_id = User.objects.get(email=member.email).id
     domain_member = DomainMember.objects.get(member=member)
     domains = [domain.name for domain in domain_member.domain.all()]
     domains = ', '.join(domains)
@@ -59,7 +60,8 @@ def view_member(request, id):
     positions = Position.objects.all()
 
     return render(request, 'panel/view-member.html', {'member':member, 'domains':domains, 
-    'roles':roles, 'current_positions': current_positions, 'current_role': current_role, 'positions': positions})
+    'roles':roles, 'current_positions': current_positions, 'current_role': current_role, 
+    'positions': positions, 'user_id':user_id})
 
 def tasks(request):
     return render(request, 'panel/tasks.html')
@@ -86,7 +88,7 @@ def events(request):
 def login(request):
     return render(request, 'panel/login.html')
 
-def profile(request):
+def profile(request, id):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -97,7 +99,7 @@ def profile(request):
         phone_number = request.POST.get('phone_number')
         discord_id = request.POST.get('discord_id')
         domains = request.POST.getlist('domains []')
-        member = Member.objects.get(email=request.user.email)
+        member = Member.objects.get(id=id)
         dm = DomainMember.objects.get(member=member)
         dm.domain.clear()
         for d in domains:
@@ -111,8 +113,9 @@ def profile(request):
         member.discord_id = discord_id
         member.save()
         return redirect('home')
-    member = Member.objects.get(email=request.user.email)
-    current_username = request.user.username
+    user = User.objects.get(id=id)
+    member = Member.objects.get(email=user.email)
+    current_username = user.username
     domains = Domain.objects.all()
     return render(request, 'panel/profile.html', {'member':member, 'username':current_username, 'domains': domains})
 

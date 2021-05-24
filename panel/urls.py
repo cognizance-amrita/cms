@@ -9,7 +9,7 @@ urlpatterns = [
     path('applications/', applications, name='applications'),
     path('announcements/', announcements, name='announcements'),
     path('tasks/', tasks, name='tasks'),
-    path('profile/', profile, name='profile'),
+    path('profile/<str:id>/', profile, name='profile'),
     path('events/', events, name='events'),
     path('domains/', domains, name='domains'),
     

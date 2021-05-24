@@ -28,7 +28,7 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'members' %}"><i class="fa fa-user"></i><span>Members</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'tasks' %}"><i class="fa fa-check-square-o"></i><span>Tasks</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'domains' %}"><i class="far fa-user-circle"></i><span>Domains</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{% url 'achievements' %}"><i class="fa fa-trophy"></i><span>Achievements</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'achievements' %}"><i class="fa fa-trophy"></i><span>Achievements</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'announcements' %}"><i class="fa fa-microphone"></i><span>Announcements</span></a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'applications' %}"><i class="fa fa-hand-paper-o"></i><span>Applications</span></a></li>
                 </ul>
@@ -41,8 +41,8 @@
                     <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
                         <ul class="navbar-nav flex-nowrap ml-auto">     
                             <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">Admin</span><i class="fa fa-user-circle-o"></i></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
+                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-toggle="dropdown" href="#"><span class="d-none d-lg-inline mr-2 text-gray-600 small">{{user.username}}</span><i class="fa fa-user-circle-o"></i></a>
+                                    <div class="dropdown-menu shadow dropdown-menu-right animated--grow-in"><a class="dropdown-item" href="/profile/{{user.id}}"><i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Profile</a>
                                         <div class="dropdown-divider"></div><a class="dropdown-item" href="login.html"><i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
