@@ -8,9 +8,9 @@
     <title>{{member.first_name}} {{member.last_name}}</title>
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
-    <link rel="stylesheet" href="{% static 'fonts/fontawesome-all.min.css' %}">
-    <link rel="stylesheet" href="{% static 'fonts/font-awesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'fonts/ionicons.min.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="{% static 'fonts/fontawesome5-overrides.min.css' %}">
 </head>
 
@@ -136,7 +136,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <tr>
-                                                        <td>Role<br>Current: {{current_role}}</td>
+                                                        <td>Role<br>Current: <b>{{current_role}}</b></td>
                                                         <td><select class="form-control" name="role">
                                                                 <optgroup label="Roles">
                                                                     {% for role in roles %}
@@ -146,7 +146,7 @@
                                                             </select></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Position(s)<br>Current: {{current_positions}}</td>
+                                                        <td>Position(s)<br>Current: <b>{{current_positions}}</b></td>
                                                         <td>
                                                         {% for position in positions %}
                                                             <div class="form-check"><input class="form-check-input" type="checkbox" id="{{position}}" name="position []" value="{{position.name}}"><label class="form-check-label" for="position">{{position.name}}</label></div>
@@ -185,8 +185,8 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="{% static 'js/script.min.js' %}"></script>
 </body>

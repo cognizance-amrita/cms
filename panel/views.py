@@ -44,6 +44,7 @@ def view_member(request, id):
         else:
             member = Member.objects.get(github_username=id)
             member.role = Role.objects.get(name=role)
+            member.positions.clear()
             for p in selected_positions:
                 member.positions.add(Position.objects.get(name=p))
             return redirect('members')
@@ -95,7 +96,12 @@ def profile(request):
         email = request.POST.get('email')
         phone_number = request.POST.get('phone_number')
         discord_id = request.POST.get('discord_id')
+        domains = request.POST.getlist('domains []')
         member = Member.objects.get(email=request.user.email)
+        dm = DomainMember.objects.get(member=member)
+        dm.domain.clear()
+        for d in domains:
+            dm.domain.add(Domain.objects.get(name=str(d)))
         member.first_name = first_name
         member.last_name = last_name
         member.github_username = github_username
@@ -107,7 +113,8 @@ def profile(request):
         return redirect('home')
     member = Member.objects.get(email=request.user.email)
     current_username = request.user.username
-    return render(request, 'panel/profile.html', {'member':member, 'username':current_username})
+    domains = Domain.objects.all()
+    return render(request, 'panel/profile.html', {'member':member, 'username':current_username, 'domains': domains})
 
 def domains(request):
     domains = Domain.objects.all()

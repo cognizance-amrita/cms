@@ -76,13 +76,22 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col">
-                                                <div class="form-group"><label>Academic year</label><select style="width: 100%;height: 40px;color: rgb(116,112,112);" required name="academic_year">
+                                                <div class="form-group"><label><b>Academic year</b></label>
+                                                    <select style="width: 100%;height: 40px;color: rgb(116,112,112);" required name="academic_year">
                                                         <option value="{{member.academic_year}}" selected="">{{member.academic_year}}</option>
                                                         <option value="I year">I year</option>
                                                         <option value="II year">II year</option>
                                                         <option value="III year">III year</option>
                                                         <option value="IV year">IV year</option>
-                                                    </select></div>
+                                                    </select>
+                                                </div>
+                                                <hr>
+                                                <div class="form-group"><label><b>Domain(s) of Interest</b></label>
+                                                    {% for domain in domains %}
+                                                    <br>
+                                                        <input type="checkbox" name="domains []" id="{{domain.name}}" value="{{domain.name}}"><label for="{{domain.name}}"> &nbsp;{{domain.name}}</label>
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
