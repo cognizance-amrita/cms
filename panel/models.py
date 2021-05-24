@@ -52,7 +52,7 @@ class Domain(models.Model):
     name = models.CharField(max_length=50, primary_key=True, default='')
     coordinators = models.ManyToManyField(Member, related_name='coordinators')
     mentors = models.ManyToManyField(Member, related_name='mentors')
-
+    discord_role_id = models.CharField(max_length=50, null=True)
     def __str__(self):
         return self.name
 
@@ -145,15 +145,15 @@ class Submission(models.Model):
 
 @receiver(post_save, sender=Member)
 def createUser(sender, instance, **kwargs):
-    if User.objects.get(email=instance.email) == None:
+    try:
         user = User.objects.create(
-        email=instance.email,
-        date_joined=instance.join_date,
-        password='admin123',
-        first_name=instance.first_name,
-        last_name=instance.last_name,
-        username=(instance.first_name + '_' + instance.last_name).lower()
-        )
+            email=instance.email,
+            date_joined=instance.join_date,
+            password='admin123',
+            first_name=instance.first_name,
+            last_name=instance.last_name,
+            username=(instance.first_name + '_' + instance.last_name).lower()
+            )
         # Discord client
         obj = []
         obj.append(DISCORD_TOKEN) #Token
@@ -162,6 +162,19 @@ def createUser(sender, instance, **kwargs):
         msg = '<@!'+ instance.discord_id +'>'+ ' is now an official member of the club :star:'
         client = Discord(obj=obj, message=msg)
         client.sendMessage()
+    except:
+        print('User already exists. Skipping')
+
+@receiver(post_save, sender=DomainMember)
+def addDomain(sender, instance, **kwargs):
+    discord_id = instance.member.discord_id
+    role_id = instance.domain.discord_role_id
+    obj = []
+    obj.append(DISCORD_TOKEN) #Token
+    obj.append(DISCORD_GUILD) #Guild
+    obj.append(DISCORD_CHANNEL) #Channel
+    client = Discord(obj=obj, userID=str(discord_id), roleID=str(role_id))
+    client.removeMemberRole()
 
 @receiver(pre_delete, sender=Member)
 def kickUser(sender, instance, **kwargs):

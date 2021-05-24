@@ -18,10 +18,11 @@ def fetch(url, token, post = False, get = False, delete = False, data = None):
     return re
 
 class Discord(object):
-    def __init__(self, obj, message = None, userID = None):
+    def __init__(self, obj, message = None, userID = None, roleID = None):
         self.obj = obj
         self.message = message
         self.userID = str(userID)
+        self.roleID = str(roleID)
 
     def sendMessage(self):
         baseURL = "channels/{}/messages".format(self.obj[2])
@@ -34,6 +35,17 @@ class Discord(object):
         if self.checkIfUserExists():
             re = fetch(baseURL, token=self.obj[0], delete=True)
 
+    def addMemberRole(self):
+        baseURL = "guilds/{}/members/{}/roles/{}".format(self.obj[1], self.userID, self.roleID)
+        postedjson =  json.dumps ( {"content":"200"} )
+        if self.checkIfUserExists():
+            re = fetch(baseURL, token=self.obj[0], post=True, data=postedjson)
+
+    def removeMemberRole(self):
+        baseURL = "guilds/{}/members/{}/roles/{}".format(self.obj[1], self.userID, self.roleID)
+        if self.checkIfUserExists():
+            re = fetch(baseURL, token=self.obj[0], delete=True)
+
     def checkIfUserExists(self):
         baseURL = "guilds/{}/members/{}".format(self.obj[1], self.userID)
         
@@ -43,3 +55,4 @@ class Discord(object):
             return True
 
         return False
+    

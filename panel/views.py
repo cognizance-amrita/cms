@@ -99,7 +99,8 @@ def profile(request, id):
         phone_number = request.POST.get('phone_number')
         discord_id = request.POST.get('discord_id')
         domains = request.POST.getlist('domains []')
-        member = Member.objects.get(id=id)
+        user = User.objects.get(id=id)
+        member = Member.objects.get(email=user.email)
         dm = DomainMember.objects.get(member=member)
         dm.domain.clear()
         for d in domains:
