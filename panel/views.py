@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from .models import Member, Domain, Task, Application, DomainMember, Role, Position
 from panel.utils.discord import Discord
 from django.contrib.auth.models import User
+from notifications.email import SendMail
+from django.template.loader import render_to_string
 
 def home(request):
     members_count = Member.objects.count
@@ -39,6 +41,15 @@ def view_member(request, id):
         if revoke == 'Yes' and reason == '':
             print('No reason provided')
         elif revoke == 'Yes' and reason != '':
+            html_message = render_to_string('panel/messages/revoke.html', {'reason': reason})
+            member = Member.objects.get(github_username=id)  
+            fullname = member.first_name + ' ' + member.last_name 
+            SendMail(
+                subject='Cognizance Membership',
+                name=fullname,
+                message=html_message,
+                recipient=[member.email]
+            )
             Member.objects.filter(github_username=id).delete()
             return redirect('members')
         else:

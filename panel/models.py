@@ -197,5 +197,13 @@ def kickUser(sender, instance, **kwargs):
     discord_id = str(instance.discord_id) #Get ID of the user
     msg = instance.first_name + ' ' + instance.last_name + ' is kicked out from the club ⚠️'
     client = Discord(obj=obj, message=msg, userID=discord_id)
+    fullname = instance.first_name + ' ' + instance.last_name
+    html_message = render_to_string('panel/messages/revoke.html')   
+    SendMail(
+            subject='Cognizance Membership',
+            name=fullname,
+            message=html_message,
+            recipient=[instance.email]
+        )
     client.kickMember()
     client.sendMessage()
