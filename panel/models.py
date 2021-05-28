@@ -3,7 +3,9 @@ from django.db import models
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_delete
 from django.contrib.auth.models import User
+from notifications.email import SendMail
 from panel.utils.discord import Discord
+from django.template.loader import render_to_string
 
 class Department(models.Model):
     name = models.CharField(max_length=100, primary_key=True, default='')
@@ -145,7 +147,6 @@ class Submission(models.Model):
 
 @receiver(post_save, sender=Member)
 def createUser(sender, instance, **kwargs):
-    try:
         user = User.objects.create(
             email=instance.email,
             date_joined=instance.join_date,
@@ -162,9 +163,16 @@ def createUser(sender, instance, **kwargs):
         msg = '<@!'+ instance.discord_id +'>'+ ' is now an official member of the club :star:'
         client = Discord(obj=obj, message=msg)
         client.sendMessage()
-    except:
-        print('User already exists. Skipping')
-
+        fullname = instance.first_name + ' ' + instance.last_name
+        html_message = render_to_string('panel/messages/acceptance.html', {'name': fullname})
+        
+        SendMail(
+            subject='Cognizance Update',
+            name=fullname,
+            message=html_message,
+            recipient=[instance.email]
+        )
+'''
 @receiver(post_save, sender=DomainMember)
 def addDomain(sender, instance, **kwargs):
     discord_id = instance.member.discord_id
@@ -175,7 +183,7 @@ def addDomain(sender, instance, **kwargs):
     obj.append(DISCORD_CHANNEL) #Channel
     client = Discord(obj=obj, userID=str(discord_id), roleID=str(role_id))
     client.removeMemberRole()
-
+'''
 @receiver(pre_delete, sender=Member)
 def kickUser(sender, instance, **kwargs):
     username=(instance.first_name + '_' + instance.last_name).lower()

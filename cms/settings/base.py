@@ -41,8 +41,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.core.mail',
     'django.contrib.staticfiles',
-    'panel'
+    'panel',
+    'notifications'
 ]
 
 MIDDLEWARE = [
@@ -106,6 +108,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'cognizance.amrita@gmail.com'
+EMAIL_HOST_PASSWORD = 'rppcfnoitjbnbeyw'
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 

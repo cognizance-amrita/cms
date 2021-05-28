@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <title>Cognizance</title>
+        <style>
+            body {
+                background: #1e002a;
+                padding:10px;
+            }
+            .logo {
+                width:20%; 
+                height:150px; 
+                margin-top: 1%; 
+                padding: 2px; 
+            }
+            .card {
+                background: #0b1a2f;
+                width: 50%;
+                position: absolute;
+                transform: translate(-50%,-50%);
+                top: 50%;
+                left:50%;
+                margin-top: 25px;
+                margin-bottom: 30px;
+                border-style: solid;
+                border-color: transparent;
+                border-radius: 5px;
+            }
+            .card-header {
+                background: #1d1d2a;
+            }
+            .title {
+                color: white;
+                font-size: 35px;
+                padding: 2px;
+            }
+            .greetings {
+                color: white;
+                font-size: 24px;
+                padding: 3px;
+                margin-left: 15px;
+            }
+            .message {
+                color: white;
+                font-size: 17px;
+                padding: 3px;
+                margin-left: 15px;
+            }
+            .divider {
+                height: 1%;
+                background: #00B2EE;
+                width: 8%;
+                color: #00B2EE;
+                margin-bottom: 10px;
+                padding-top:5px;
+                
+            }
+            .regards {
+                color: white;
+                font-size: 18px;
+                padding: 3px;
+                margin-left: 15px;
+                line-height: 1.5;
+                margin-bottom: 5px;
+            }
+            .social-logo {
+                width: 6%;
+                height: 5%;
+            }
+            .footer {
+                background: #191919;
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <div class="card-header">
+                <center>
+                    <img class="logo" src="https://user-images.githubusercontent.com/42594454/119937043-c0cc7300-bfa7-11eb-82cd-5de0964fb595.png" alt="Cognizance Logo">
+                    <p class="title">C O G N I Z A N C E</p><br>
+                </center>
+            </div>
+            <b><p class="greetings">Hello {{name}}</p></b>
+            <center>
+                <div class="divider"></div>
+            </center>
+            <br><p class="message">{{message}}</p><br>
+            <div class="regards">
+                <p>
+                <b>Regards</b><br>
+                Team Cognizance
+                </p>
+            </div>
+            <div class="footer">
+                <center>
+                    <br><div class="divider"></div><br>
+                    <a href="https://www.instagram.com/cognizance.amrita/"><img class="social-logo" src="https://user-images.githubusercontent.com/42594454/119941590-71d60c00-bfae-11eb-88b9-5440f7be482b.png"></a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="https://twitter.com/cognizance_chn"><img class="social-logo" src="https://user-images.githubusercontent.com/42594454/119941746-9b8f3300-bfae-11eb-8a49-0bfed738f086.png"></a>
+                    <br><br><div class="divider"></div><br>
+                    <p style="color: grey;">Copyright © 2021, All rights reserved. </p><br>
+                </center>
+            </div>
+        </div>
+        
+    </body>
+</html>

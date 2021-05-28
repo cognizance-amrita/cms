@@ -2,6 +2,8 @@
 cms/__pycache__
 panel/__pycache__
 panel/migrations
+notifications/__pycache__
+notifications/migrations
 bin
 lib
 pyvenv.cfg
