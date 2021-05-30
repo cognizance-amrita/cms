@@ -130,9 +130,9 @@ class Task(models.Model):
         return self.title
 
 class Submission(models.Model):
-     
+    submission_id = models.BigAutoField(primary_key=True)
     task_id = models.IntegerField(null=True)
-    username = models.CharField(max_length=200, primary_key=True, default='')
+    candidate = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='candidate')
     score = models.FloatField(max_length=50, null=True)
     submitted_on = models.DateTimeField(auto_now_add=True)
     submission_file = models.FileField(null=True)
