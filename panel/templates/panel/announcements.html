@@ -62,10 +62,10 @@
                             {% csrf_token %}
                                 <div class="row">
                                     <div class="col">
-                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="notifications []"><label class="form-check-label" for="formCheck-1">Email notification</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1" name="notifications []" value="Email"><label class="form-check-label" for="formCheck-1">Email notification</label></div>
                                     </div>
                                     <div class="col">
-                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" name="notifications []"><label class="form-check-label" for="formCheck-2">Discord notification</label></div>
+                                        <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2" name="notifications []" value="Discord"><label class="form-check-label" for="formCheck-2">Discord notification</label></div>
                                     </div>
                                 </div><textarea style="width: 100%;margin-top: 20px;padding: 10px;border-radius: 6px;height: 150px;border-color: rgb(181,176,176);border-top-color: rgb(0,;border-right-color: 0,;border-bottom-color: 0);border-left-color: 0,;" placeholder="Enter your message here" name="message"></textarea>
                                 <button class="btn btn-primary" type="submit" style="margin-top: 20px;margin-bottom: 20px;width: 30%;padding: 10px;">Post announcement</button>

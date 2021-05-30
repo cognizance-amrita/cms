@@ -83,14 +83,25 @@ def achievements(request):
 def announcements(request):
     if request.method == 'POST':
         notifications = request.POST.getlist('notifications []')
-        message = request.POST.get('message')
-        obj = []
-        obj.append(DISCORD_TOKEN) #Token
-        obj.append(DISCORD_GUILD) #Guild
-        obj.append(DISCORD_CHANNEL) #Channel
-        client = Discord(obj=obj, message=message)
-        client.sendMessage()
-        print('Notification sent')
+        if 'Discord' in  notifications:
+            message = request.POST.get('message')
+            obj = []
+            obj.append(DISCORD_TOKEN) #Token
+            obj.append(DISCORD_GUILD) #Guild
+            obj.append(DISCORD_CHANNEL) #Channel
+            client = Discord(obj=obj, message=message)
+            client.sendMessage()
+            print('Notification sent')
+        if 'Email' in notifications:
+            message = request.POST.get('message')
+            user = request.user
+            member = Member.objects.get(email=user.email) 
+            SendMail(
+                subject='Announcement',
+                name=member.first_name,
+                message=message,
+                recipient=['cognizance-club@googlegroups.com']
+            )
     return render(request, 'panel/announcements.html')
 
 def events(request):
