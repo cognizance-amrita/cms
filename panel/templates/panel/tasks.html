@@ -70,14 +70,16 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Preliminary</td>
-                                            <td>Sanjay</td>
-                                            <td>2020/11/28</td>
-                                            <td>2020/11/28</td>
-                                            <td><button class="btn btn-primary" type="button">View</button></td>
-                                        </tr>
+                                        {% for task in tasks %}
+                                            <tr>
+                                                <td>{{task.id}}</td>
+                                                <td>{{task.title}}</td>
+                                                <td>{{task.author}}</td>
+                                                <td>{{task.starting_time}}</td>
+                                                <td>{{task.deadline}}</td>
+                                                <td><button class="btn btn-primary" type="button">View</button></td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                     <tfoot>
                                         <tr></tr>

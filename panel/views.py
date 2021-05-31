@@ -83,7 +83,8 @@ def view_member(request, id):
 
 @login_required(login_url='login')
 def tasks(request):
-    return render(request, 'panel/tasks.html')
+    tasks = Task.objects.all()
+    return render(request, 'panel/tasks.html', {'tasks': tasks})
 
 @login_required(login_url='login')
 def achievements(request):
