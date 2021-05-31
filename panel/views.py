@@ -5,7 +5,11 @@ from panel.utils.discord import Discord
 from django.contrib.auth.models import User
 from notifications.email import SendMail
 from django.template.loader import render_to_string
+from .decorators import unAuthenticated_user
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url='login')
 def home(request):
     members_count = Member.objects.count
     domains_count = Domain.objects.count
@@ -19,9 +23,11 @@ def home(request):
     }
     return render(request, 'panel/index.html', data)
 
+@login_required(login_url='login')
 def applications(request):
     return render(request, 'panel/applications.html')
 
+@login_required(login_url='login')
 def members(request):
     members = Member.objects.all()
     domain_member = DomainMember.objects.all()
@@ -30,6 +36,7 @@ def members(request):
     }
     return render(request, 'panel/members.html', data)
 
+@login_required(login_url='login')
 def view_member(request, id):
 
     if request.method == 'POST':
@@ -74,12 +81,15 @@ def view_member(request, id):
     'roles':roles, 'current_positions': current_positions, 'current_role': current_role, 
     'positions': positions, 'user_id':user_id})
 
+@login_required(login_url='login')
 def tasks(request):
     return render(request, 'panel/tasks.html')
 
+@login_required(login_url='login')
 def achievements(request):
     return render(request, 'panel/achievements.html')
 
+@login_required(login_url='login')
 def announcements(request):
     if request.method == 'POST':
         notifications = request.POST.getlist('notifications []')
@@ -104,12 +114,24 @@ def announcements(request):
             )
     return render(request, 'panel/announcements.html')
 
+@login_required(login_url='login')
 def events(request):
     return render(request, 'panel/events.html')
 
-def login(request):
+@unAuthenticated_user
+def loginApp(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(home)
+        else:
+            return render(request, 'panel/login.html', {'message': 'Invalid credentials'})
     return render(request, 'panel/login.html')
 
+@login_required(login_url='login')
 def profile(request, id):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
@@ -142,6 +164,7 @@ def profile(request, id):
     domains = Domain.objects.all()
     return render(request, 'panel/profile.html', {'member':member, 'username':current_username, 'domains': domains})
 
+@login_required(login_url='login')
 def domains(request):
     domains = Domain.objects.all()
     data = {
@@ -149,4 +172,6 @@ def domains(request):
     }
     return render(request, 'panel/domains.html', data)
 
-
+def logoutApp(request):
+    logout(request)
+    return redirect(loginApp)
