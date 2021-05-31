@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.core.mail',
     'django.contrib.staticfiles',
     'panel',
-    'notifications'
+    'notifications',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -131,9 +132,23 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+
+
+AWS_ACCESS_KEY_ID = 'AKIAZIJW2VQP5V4ODKPI'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'cognizance-cms-admin'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+AWS_DEFAULT_ACL = 'public-read-write'
+
+AWS_LOCATION = 'static'
+
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static')
 ]
 
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
 
-STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
