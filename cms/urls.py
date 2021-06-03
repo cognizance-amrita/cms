@@ -17,8 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from graphene_django.views import GraphQLView
+from .api.schema import schema
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', csrf_exempt(GraphQLView.as_view(schema=schema, graphiql=False))),
     path('', include('panel.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

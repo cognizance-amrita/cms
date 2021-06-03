@@ -46,8 +46,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'panel',
     'notifications',
-    'storages'
+    'storages',
+    'graphene_django'
 ]
+
+GRAPHENE = {
+ 'SCHEMA': 'cms.api.schema.schema'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
