@@ -7,3 +7,4 @@ notifications/migrations
 bin
 lib
 pyvenv.cfg
+.vscode/launch.json
