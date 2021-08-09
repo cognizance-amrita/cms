@@ -157,13 +157,14 @@ def profile(request, id):
         member.username = username
         member.phone = phone_number
         member.discord_id = discord_id
-        member.save()
+        Member.objects.filter(email=user.email).update(first_name=first_name, last_name=last_name,academic_year=academic_year,github_username=github_username,phone=phone_number,discord_id=discord_id,email=email)
         return redirect('home')
-    user = User.objects.get(id=id)
-    member = Member.objects.get(email=user.email)
-    current_username = user.username
-    domains = Domain.objects.all()
-    return render(request, 'panel/profile.html', {'member':member, 'username':current_username, 'domains': domains})
+    else:
+        user = User.objects.get(id=id)
+        member = Member.objects.get(email=user.email)
+        current_username = user.username
+        domains = Domain.objects.all()
+        return render(request, 'panel/profile.html', {'member':member, 'username':current_username, 'domains': domains})
 
 @login_required(login_url='login')
 def domains(request):
