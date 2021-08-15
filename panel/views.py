@@ -1,3 +1,4 @@
+from django.http.response import HttpResponse
 from cms.settings.base import DISCORD_CHANNEL, DISCORD_GUILD, DISCORD_TOKEN
 from django.shortcuts import render, redirect
 from .models import Member, Domain, Task, Application, DomainMember, Role, Position
@@ -159,12 +160,14 @@ def profile(request, id):
         member.discord_id = discord_id
         Member.objects.filter(email=user.email).update(first_name=first_name, last_name=last_name,academic_year=academic_year,github_username=github_username,phone=phone_number,discord_id=discord_id,email=email)
         return redirect('home')
-    else:
+    elif request.user.is_staff:
         user = User.objects.get(id=id)
         member = Member.objects.get(email=user.email)
         current_username = user.username
         domains = Domain.objects.all()
         return render(request, 'panel/profile.html', {'member':member, 'username':current_username, 'domains': domains})
+    else:
+        return HttpResponse('<h1>You are not permitted to do this operation. Please contact the administrator for support.</h1>')
 
 @login_required(login_url='login')
 def domains(request):
