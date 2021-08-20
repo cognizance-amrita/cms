@@ -23,6 +23,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', csrf_exempt(GraphQLView.as_view(schema=schema, graphiql=False))),
+    path('api/', csrf_exempt(GraphQLView.as_view(schema=schema, graphiql=True))),
     path('', include('panel.urls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
