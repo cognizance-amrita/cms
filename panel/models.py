@@ -135,9 +135,9 @@ class Submission(models.Model):
     candidate = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='candidate')
     score = models.FloatField(max_length=50, null=True)
     submitted_on = models.DateTimeField(auto_now_add=True)
-    submission_file = models.FileField(null=True)
+    submission_link = models.URLField(null=True)
     submission_text = models.CharField(max_length=500, null=True)
-    evaluator = models.ForeignKey(Member, on_delete=models.CASCADE)
+    evaluator = models.ForeignKey(Member, on_delete=models.CASCADE, null=True)
     feedback = models.CharField(max_length=500, null=True)
     
     def __str__(self):
