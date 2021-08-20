@@ -65,7 +65,10 @@
                                             <thead>
                                                 <tr>
                                                     <th style="color: rgb(57,58,62);">Basic details</th>
-                                                    <a href="/profile/{{user_id}}"><button class="btn btn-primary" type="button" style="padding-right: 15px;padding-left: 15px;margin-left: 24px;margin-bottom: 20px;">Edit Profile</button></a>
+                                                    {% if request.user.is_staff %}
+                                                        <a href="/profile/{{user_id}}"><button class="btn btn-primary" type="button" style="padding-right: 15px;padding-left: 15px;margin-left: 24px;margin-bottom: 20px;">Edit Profile</button></a>
+
+                                                    {% endif %}
                                                 </tr>
                                             </thead>
                                             <tbody>
