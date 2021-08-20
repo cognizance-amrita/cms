@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from panel.models import Member, Task, Department, Role, Position, Domain, DomainMember, Application, Achievement, Submission
+from panel.models import *
 
 class MemberType(DjangoObjectType):
     class Meta:
@@ -80,3 +80,37 @@ class Query(graphene.ObjectType):
 
     def resolve_submission(self,info,**kwargs):
         return Submission.objects.all()
+
+class Sub(graphene.ObjectType):
+   task_id = graphene.Int()
+   candidate_gitname = graphene.String()
+   submission_link = graphene.String()
+   submission_text = graphene.String()
+   feedback = graphene.String() 
+
+class SubmissionData(graphene.InputObjectType):
+   task_id = graphene.Int()
+   candidate_gitname = graphene.String()
+   submission_link = graphene.String()
+   submission_text = graphene.String()
+   feedback = graphene.String() 
+
+class AddSubmission(graphene.Mutation):
+
+   class Arguments:
+       data = SubmissionData(required=True)
+   submission = graphene.Field(Sub)
+   def mutate(root, info, data=None):
+       candidate = Member.objects.get(github_username=data.candidate_gitname)
+       submission = Submission(
+           task_id=data.task_id,
+           candidate=candidate,
+           submission_link=data.submission_link,
+           submission_text=data.submission_text,
+           feedback=data.feedback    
+       )
+       submission.save()
+       return AddSubmission(submission = submission)
+
+class Mutation(graphene.ObjectType):
+    add_submission = AddSubmission.Field()
