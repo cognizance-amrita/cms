@@ -141,7 +141,7 @@ class Submission(models.Model):
     feedback = models.CharField(max_length=500, null=True)
     
     def __str__(self):
-        return self.username
+        return self.candidate.github_username
 
 # DJANGO SIGNALS 
 
