@@ -1,6 +1,13 @@
 import graphene
 from graphene_django import DjangoObjectType
+from django.contrib.auth import get_user_model
 from panel.models import *
+import graphql_jwt
+
+class UserType(DjangoObjectType):
+    class Meta:
+        model = get_user_model()
+
 
 class MemberType(DjangoObjectType):
     class Meta:
@@ -54,31 +61,77 @@ class Query(graphene.ObjectType):
     achievement = graphene.List(AchievementType)
     submission = graphene.List(SubmissionType)
 
+    me = graphene.Field(UserType)
+    users = graphene.List(UserType)
+
+    def resolve_me(self, info):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
+        return user
+
     def resolve_members(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Member.objects.all()
     
     def resolve_tasks(self, info, **kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Task.objects.all()
     
     def resolve_departments(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Department.objects.all()
 
     def resolve_role(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Role.objects.all()
 
     def resolve_position(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Position.objects.all()
 
     def resolve_domain(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Domain.objects.all()
 
     def resolve_domainmember(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return DomainMember.objects.all()
 
     def resolve_application(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Application.objects.all()
 
     def resolve_submission(self,info,**kwargs):
+        user = info.context.user
+        if user.is_anonymous:
+            raise Exception('Not logged in!')
+            return
         return Submission.objects.all()
 
 class Sub(graphene.ObjectType):
@@ -113,4 +166,7 @@ class AddSubmission(graphene.Mutation):
        return AddSubmission(submission = submission)
 
 class Mutation(graphene.ObjectType):
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
     add_submission = AddSubmission.Field()
