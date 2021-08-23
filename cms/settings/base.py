@@ -31,7 +31,7 @@ DISCORD_CHANNEL = '816274899257655297'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '*']
+ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Application definition
@@ -97,6 +97,11 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+    "Content-Type", 
+    "Authorization", 
+    "Accept", 
+    "Accept-Language", 
+    "X-Authorization"
 ]
 
 ROOT_URLCONF = 'cms.urls'
