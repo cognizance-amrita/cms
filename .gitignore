@@ -9,3 +9,4 @@ lib
 pyvenv.cfg
 .vscode/launch.json
 vir
+.env
