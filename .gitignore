@@ -1,12 +1,9 @@
 # created by virtualenv automatically
-cms/__pycache__/*
-panel/__pycache__/*
-panel/migrations/*
-notifications/__pycache__/*
-notifications/migrations
+__pycache__
+migrations
 bin
 lib
 pyvenv.cfg
-.vscode/launch.json
+.vscode
 vir
 .env
