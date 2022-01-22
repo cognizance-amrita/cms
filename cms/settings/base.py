@@ -22,11 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '3u9t4*23w8t7e4&ueslzgzarh-l-n(z1_a^nljcis$7wwzzl9@'
+SECRET_KEY = os.environ['SECRET_KEY']
 
-DISCORD_TOKEN = 'Nzg0NzU3MzM1MzIyOTE4OTEz.X8t8OA.4SDjrGqB7p8xUrK_g9p8-hvHHk4'
-DISCORD_GUILD = '790264911254388776'
-DISCORD_CHANNEL = '816274899257655297'
+DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
+DISCORD_GUILD = os.environ['DISCORD_GUILD']
+DISCORD_CHANNEL = os.environ['DISCORD_CHANNEL']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -131,11 +131,11 @@ WSGI_APPLICATION = 'cms.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd7s2pjdbqamie7',
-        'USER' : 'sikglyktbqzbgq',	
-        'PASSWORD': '2e14fbfe45aab17c21dc29095f2649180fb0c76f7d2b7a87555b3771a13163ea',	
-        'HOST': 'ec2-54-243-92-68.compute-1.amazonaws.com',	
+        'ENGINE': '',
+        'NAME': '',
+        'USER' : '',	
+        'PASSWORD': '',	
+        'HOST': '',	
         'PORT': '5432'
     }
 }
@@ -167,8 +167,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'cognizance.amrita@gmail.com'
-EMAIL_HOST_PASSWORD = 'rppcfnoitjbnbeyw'
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = ['EMAIL_HOST_PASSWORD']
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -187,22 +187,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 
-
-AWS_ACCESS_KEY_ID = 'AKIAZIJW2VQP2CJOJ2MH'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'cognizance-cms-admin'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
-AWS_DEFAULT_ACL = 'public-read-write'
-
-AWS_LOCATION = 'static'
-
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static')
 ]
 
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
