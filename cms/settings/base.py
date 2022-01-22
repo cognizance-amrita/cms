@@ -97,10 +97,10 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
-    "Content-Type", 
-    "Authorization", 
-    "Accept", 
-    "Accept-Language", 
+    "Content-Type",
+    "Authorization",
+    "Accept",
+    "Accept-Language",
     "X-Authorization"
 ]
 
@@ -133,9 +133,9 @@ DATABASES = {
     'default': {
         'ENGINE': '',
         'NAME': '',
-        'USER' : '',	
-        'PASSWORD': '',	
-        'HOST': '',	
+        'USER' : '',
+        'PASSWORD': '',
+        'HOST': '',
         'PORT': '5432'
     }
 }
@@ -192,6 +192,8 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
