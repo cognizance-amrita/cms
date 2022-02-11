@@ -16,6 +16,16 @@ on:
 env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME: image
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+  DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+  DISCORD_GUILD: ${{ secrets.DISCORD_GUILD }}
+  DISCORD_CHANNEL: ${{ secrets.DISCORD_CHANNEL }}
+  EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+  EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_STORAGE_BUCKET_NAME: ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
 
 jobs:
   # Run tests.
