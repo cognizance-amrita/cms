@@ -1,7 +1,7 @@
 from cms.settings.base import DISCORD_CHANNEL, DISCORD_GUILD, DISCORD_TOKEN
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete, pre_save
 from django.contrib.auth.models import User
 from notifications.email import SendMail
 from panel.utils.discord import Discord
@@ -145,7 +145,7 @@ class Submission(models.Model):
 
 # DJANGO SIGNALS 
 
-@receiver(post_save, sender=Member)
+@receiver(pre_save, sender=Member)
 def createUser(sender, instance, **kwargs):
         user = User.objects.create(
             email=instance.email,
@@ -161,7 +161,8 @@ def createUser(sender, instance, **kwargs):
         obj.append(DISCORD_GUILD) #Guild
         obj.append(DISCORD_CHANNEL) #Channel
         msg = '<@!'+ instance.discord_id +'>'+ ' is now an official member of the club :star:'
-        client = Discord(obj=obj, message=msg)
+        client = Discord(obj=obj, message=msg,roleID=instance.role.discord_role_id,userID=instance.discord_id)
+        client.addMemberRole()
         client.sendMessage()
         fullname = instance.first_name + ' ' + instance.last_name
         html_message = render_to_string('panel/messages/acceptance.html', {'name': fullname})
