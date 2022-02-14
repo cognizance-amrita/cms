@@ -1,3 +1,4 @@
+from torch import get_num_interop_threads
 from cms.settings.base import DISCORD_CHANNEL, DISCORD_GUILD, DISCORD_TOKEN
 from django.db import models
 from django.dispatch import receiver
@@ -6,6 +7,7 @@ from django.contrib.auth.models import User
 from notifications.email import SendMail
 from panel.utils.discord import Discord
 from django.template.loader import render_to_string
+from utils.github import GitHub
 
 class Department(models.Model):
     name = models.CharField(max_length=100, primary_key=True, default='')
@@ -188,6 +190,8 @@ def createUser(sender, instance, **kwargs):
             message=html_message,
             recipient=[instance.email]
         )
+        gh = GitHub(instance.github_username)
+        gh.addUser()
 '''
 @receiver(post_save, sender=DomainMember)
 def addDomain(sender, instance, **kwargs):
@@ -223,3 +227,5 @@ def kickUser(sender, instance, **kwargs):
         )
     client.kickMember()
     client.sendMessage()
+    gh = GitHub(instance.github_username)
+    gh.removeUser()
