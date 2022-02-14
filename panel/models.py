@@ -16,15 +16,30 @@ class Role(models.Model):
     name = models.CharField(max_length=100, primary_key=True, default='')
     from_date = models.DateTimeField(auto_now_add=True)
     discord_role_id = models.CharField(max_length=50, null=True)
-    
+
     def __str__(self):
         return self.name
+
+class Token(models.Model):
+    key = models.CharField(max_length=50)
+    value = models.CharField(max_length=100)
+    creator = models.ForeignKey(User, on_delete=models.PROTECT, related_name='TokenCreator', blank=True, null=True)
+    creationTime = models.DateTimeField(null=True, blank=True)
+    lastEditor = models.ForeignKey(User, on_delete=models.SET_NULL, related_name='TokenLastEditor', blank=True, null=True)
+    lastEditTime = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Tokens"
+        verbose_name = "Token"
+
+    def __str__(self):
+        return self.key
 
 class Position(models.Model):
     name = models.CharField(max_length=100, primary_key=True, default='')
     from_date = models.DateTimeField(auto_now_add=True)
     discord_role_id = models.CharField(max_length=50, null=True)
-    
+
     def __str__(self):
         return self.name
 
@@ -65,7 +80,7 @@ class DomainMember(models.Model):
 
     def __str__(self):
         return self.member.first_name + self.member.last_name
-    
+
 
 class Application(models.Model):
 
@@ -75,13 +90,13 @@ class Application(models.Model):
         ('III year','III year'),
         ('IV year','IV year')
     )
-    
+
     statuses = (
         ('Under review','Under review'),
         ('Accepted','Accepted'),
         ('Rejected','Rejected')
     )
-    
+
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length=100, null=True)
     email = models.EmailField(max_length=100, primary_key=True, default='')
@@ -139,11 +154,11 @@ class Submission(models.Model):
     submission_text = models.CharField(max_length=500, null=True)
     evaluator = models.ForeignKey(Member, on_delete=models.CASCADE, null=True)
     feedback = models.CharField(max_length=500, null=True)
-    
+
     def __str__(self):
         return self.candidate.github_username
 
-# DJANGO SIGNALS 
+# DJANGO SIGNALS
 
 @receiver(pre_save, sender=Member)
 def createUser(sender, instance, **kwargs):
@@ -166,7 +181,7 @@ def createUser(sender, instance, **kwargs):
         client.sendMessage()
         fullname = instance.first_name + ' ' + instance.last_name
         html_message = render_to_string('panel/messages/acceptance.html', {'name': fullname})
-        
+
         SendMail(
             subject='Cognizance Update',
             name=fullname,
@@ -199,7 +214,7 @@ def kickUser(sender, instance, **kwargs):
     msg = instance.first_name + ' ' + instance.last_name + ' is kicked out from the club ⚠️'
     client = Discord(obj=obj, message=msg, userID=discord_id)
     fullname = instance.first_name + ' ' + instance.last_name
-    html_message = render_to_string('panel/messages/revoke.html')   
+    html_message = render_to_string('panel/messages/revoke.html')
     SendMail(
             subject='Cognizance Membership',
             name=fullname,
