@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from notifications.email import SendMail
 from panel.utils.discord import Discord
 from django.template.loader import render_to_string
-from utils.github import GitHub
+from panel.utils.github import GitHub
 
 class Department(models.Model):
     name = models.CharField(max_length=100, primary_key=True, default='')
