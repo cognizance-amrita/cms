@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.core.mail',
     'django.contrib.staticfiles',
     'panel',
+    'integrations',
     'notifications',
     'storages',
     'graphene_django',
