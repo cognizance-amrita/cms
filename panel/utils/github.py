@@ -6,7 +6,7 @@ class GitHub:
 
     def removeUser(self):
         GITHUB_TOKEN = Token.objects.values().get(key='GITHUB_TOKEN')['value']
-        g = Github(GITHUB_TOKEN)
+        g = GitHub(GITHUB_TOKEN)
         ghuser = g.get_user(self.username)
         org = g.get_organization('cognizance-amrita')
         if org.has_in_members(ghuser):
@@ -14,7 +14,7 @@ class GitHub:
 
     def addUser(self):
         GITHUB_TOKEN = Token.objects.values().get(key='GITHUB_TOKEN')['value']
-        g = Github(GITHUB_TOKEN)
+        g = GitHub(GITHUB_TOKEN)
         ghuser = g.get_user(self.username)
         org = g.get_organization('cognizance-amrita')
         if not org.has_in_members(ghuser):
@@ -22,7 +22,7 @@ class GitHub:
 
     def checkIfUserExists(self):
         GITHUB_TOKEN = Token.objects.values().get(key='GITHUB_TOKEN')['value']
-        g = Github(GITHUB_TOKEN)
+        g = GitHub(GITHUB_TOKEN)
         ghuser = g.get_user(self.username)
         org = g.get_organization('cognizance-amrita')
         if org.has_in_members(ghuser):
