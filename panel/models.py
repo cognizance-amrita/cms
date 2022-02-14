@@ -1,4 +1,3 @@
-from torch import get_num_interop_threads
 from cms.settings.base import DISCORD_CHANNEL, DISCORD_GUILD, DISCORD_TOKEN
 from django.db import models
 from django.dispatch import receiver
